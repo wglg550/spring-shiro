@@ -1,0 +1,74 @@
+server:
+  port: 8081
+#  servlet:
+#    context-path: /shiro
+
+spring:
+  application:
+    name: shiro
+  #数据源配置
+  datasource:
+#      url: jdbc:mysql://localhost:3306/spring_cloud_demo?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://localhost:3306/spring_cloud_demo?useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: 123456789
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.mysql.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      #下面为druid连接池的补充设置，应用到上面所有数据源中
+      #初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+      initial-size: 10
+      #最小连接池数量
+      min-idle: 40
+      #最大连接池数量
+      max-active: 200
+      #获取连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true使用非公平锁。
+      max-wait: 60000
+      #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      #配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      #用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用
+      validation-query: SELECT 1 FROM DUAL
+      #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-while-idle: true
+      #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-borrow: false
+      #归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-return: false
+      #是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。(mysql5.5+建议开启)
+      pool-prepared-statements: true
+      #要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      max-pool-prepared-statement-per-connection-size: 20
+      #配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,slf4j
+      #合并多个datasource监控
+      use-global-data-source-stat: true
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      #druid数据库密码加密配置
+      #connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      #druid数据库密码加密
+      #filter:
+      # config:
+      #   enabled: true
+  main:
+  #只要将其值更改为false时就可以解决如下问题，即存在id或者name相同的bean时，不是打印出相关信息，而是直接抛异常，这样就可以迫使开发人员必须解决id或者name重复的问题后才能成功启动容器。然后就尝试了下，
+    allow-bean-definition-overriding: false
+#redis
+redis:
+  host: redis-host
+  port: 6379
+
+  #mongodb
+  #data:
+    #mongodb:
+      #database: k12-mall
+      #grid-fs-database: k12-mall
+      #uri: mongodb://db-host:27017/k12-mall
+
+#shiro:
+#  web:
+#    enabled: true
+#  loginUrl: /login
+
